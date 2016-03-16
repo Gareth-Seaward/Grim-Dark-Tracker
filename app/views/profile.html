@@ -1,0 +1,38 @@
+﻿<form id="frmProfile" role="form">
+    <h2>Profile</h2>
+
+    <br />
+    <div class="form-group">
+        <label for="txtName">Name</label>
+        <input type="text" class="form-control" id="txtName" placeholder="Name" name="name" data-ng-model="profile.name" />
+    </div>
+    <div class="form-group">
+        <label for="ddlFaction">Current Faction</label>
+        <select id="ddlFaction" name="currentFaction" data-ng-model="profile.currentFaction" class="form-control">
+            <option>Adepta Sororitas</option>
+            <option>Adeptus Astartes: Blood Angels</option>
+            <option>Adeptus Astartes: Dark Angels</option>
+            <option>Adeptus Astartes: Grey Knights</option>
+            <option>Adeptus Astartes: Space Marines</option>
+            <option>Adeptus Astartes: Space Wolves</option>
+            <option>Adeptus Mechanicus: Cult Mechanicus</option>
+            <option>Adeptus Mechanicus: Skitarii</option>
+            <option>Astra Militarum</option>
+            <option>Chaos Daemons</option>
+            <option>Chaos Space Marines</option>
+            <option>Dark Eldar</option>
+            <option>Eldar</option>
+            <option>Harlequins</option>
+            <option>Imperial Knights</option>
+            <option>Inquisition</option>
+            <option>Khorne Daemonkin</option>
+            <option>Militarum Tempestus</option>
+            <option>Necrons</option>
+            <option>Officio Assassinorum</option>
+            <option>Orks</option>
+            <option>Tau Empire</option>
+            <option>Tyranids</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary" data-ng-click="updateProfile()">Update</button>
+</form>
