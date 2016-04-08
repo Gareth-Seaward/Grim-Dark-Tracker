@@ -3,22 +3,30 @@ app.factory("profileService", ["$rootScope", "localStorageService", "firebaseSer
     var rootRef = firebaseService.rootRef;
 
     var profileServiceFactory = {};
-
+    var broadcastRequired = false;
 
     var userProfile = {
         name: "",
         currentFaction: ""
     }
 
-    var wasProfile = function() {
+    var wasProfile = function () {
         return userProfile.name !== "";
     }
 
-        var getUserProfile = function () {
+    var getUserProfile = function () {
         return userProfile;
     }
 
+    var setDefaultFaceBookProfile = function (faceBook) {
+        userProfile.name = faceBook.displayName;
+        broadcastRequired = true;
+    }
+
     var fetchProfile = function () {
+        //Reset
+        broadcastRequired = false;
+
         // Check the current user
         var user = rootRef.getAuth();
         var userRef;
@@ -28,23 +36,32 @@ app.factory("profileService", ["$rootScope", "localStorageService", "firebaseSer
             return;
         }
 
+        if (user.provider === "facebook") {
+            setDefaultFaceBookProfile(user.facebook);
+        }
+
         userRef = rootRef.child("users").child(user.uid);
         userRef.once("value", function (snap) {
+
             var user = snap.val();
-            if (!user) {
-                return;
+            if (user) {
+                // set the fields
+                userProfile.name = user.name;
+                userProfile.currentFaction = user.currentFaction;
+                broadcastRequired = true;
             }
 
-            // set the fields
-            userProfile.name = user.name;
-            userProfile.currentFaction = user.currentFaction;
+            if (broadcastRequired) {
+                $rootScope.$broadcast("profileUpdate");
+            }
 
-            $rootScope.$broadcast("profileUpdate");
         }, function (err) {
             console.log(err);
             // code to handle read error
         });
     }
+
+
 
     var updateProfile = function (profile) {
         var user = rootRef.getAuth();
@@ -71,7 +88,7 @@ app.factory("profileService", ["$rootScope", "localStorageService", "firebaseSer
     profileServiceFactory.wasProfile = wasProfile;
 
     profileServiceFactory.userProfile = getUserProfile;
-        profileServiceFactory.updateProfile = updateProfile;
+    profileServiceFactory.updateProfile = updateProfile;
     return profileServiceFactory;
 }
 ]);
