@@ -25,5 +25,12 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
         var loginPromise = authService.authWithPassword($scope.loginData);
         authService.handleAuthResponse(loginPromise, '/profile');
     };
-}
+
+        $scope.authExternalProvider = function(provider) {
+            $scope.loginError = loginErrorDefault;
+
+            var socailLoginPromise = authService.thirdPartyLogin(provider);
+            authService.handleAuthResponse(socailLoginPromise, '/profile');
+        };
+    }
 ]);

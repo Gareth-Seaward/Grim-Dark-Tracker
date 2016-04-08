@@ -10,7 +10,11 @@ app.factory("profileService", ["$rootScope", "localStorageService", "firebaseSer
         currentFaction: ""
     }
 
-    var getUserProfile = function () {
+    var wasProfile = function() {
+        return userProfile.name !== "";
+    }
+
+        var getUserProfile = function () {
         return userProfile;
     }
 
@@ -64,6 +68,7 @@ app.factory("profileService", ["$rootScope", "localStorageService", "firebaseSer
     }
 
     profileServiceFactory.getProfile = fetchProfile;
+    profileServiceFactory.wasProfile = wasProfile;
 
     profileServiceFactory.userProfile = getUserProfile;
         profileServiceFactory.updateProfile = updateProfile;
